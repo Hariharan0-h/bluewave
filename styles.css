@@ -88,6 +88,8 @@ body {
 .sidebar-bottom-icons {
     margin-top: 15px;
     padding-bottom: 20px;
+    flex: 1;
+    overflow-y: auto;
     width: 100%;
     display: flex;
     flex-direction: column;
