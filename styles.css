@@ -64,7 +64,7 @@ body {
     height: 40px;
     display: flex;
     align-items: center;
-    justify-content: center;
+    justify-: center;
     margin: 10px 0 20px;
 }
 
@@ -118,7 +118,7 @@ body {
     height: 45px;
     display: flex;
     align-items: center;
-    justify-content: center;
+    justify-: center;
     margin: 8px 0;
     border-radius: 50%;
     transition: all 0.3s ease;
@@ -174,7 +174,7 @@ body {
     height: 24px;
 }
 
-/* Main Content */
+/* Main  */
 .main {
     flex-grow: 1;
     display: flex;
@@ -189,7 +189,7 @@ body {
     height: 60px;
     background-color: #fff;
     display: flex;
-    justify-content: space-between;
+    justify-: space-between;
     align-items: center;
     padding: 0 20px;
     border-bottom: 1px solid rgba(0, 0, 0, 0.1);
@@ -237,7 +237,7 @@ body {
 }
 
 .form-container {
-    max-width: 1700px;
+    max-width: 2500px;
     width: 100%;
     margin: 0 auto;
     box-shadow: var(--box-shadow);
