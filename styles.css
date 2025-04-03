@@ -228,6 +228,11 @@ body {
     fill: var(--primary-dark);;
 }
 
+::selection {
+    color: rgb(255, 255, 255);
+    background: var(--primary-color);
+  }
+
 /* Content Area */
 .content {
     flex: 1;
