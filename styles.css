@@ -86,7 +86,7 @@ body {
 }
 
 .sidebar-bottom-icons {
-    margin-top: auto;
+    margin-top: 15px;
     padding-bottom: 20px;
     width: 100%;
     display: flex;
@@ -94,6 +94,17 @@ body {
     align-items: center;
     position: relative; /* Add position relative */
     z-index: 1001; /* Higher than sidebar */
+}
+
+.sidebar-bottom-icons-static {
+    margin-top: auto;
+    padding-bottom: 20px;
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    position: relative;
+    z-index: 1001;
 }
 
 .sidebar-logo svg {
