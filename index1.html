@@ -1,0 +1,1275 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>IHMS Portal - Integrated Healthcare Management System</title>
+    
+    <!-- Font preload strategy to ensure Poppins loads first -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    
+    <!-- IMPORTANT: Improved Font Awesome loading strategy -->
+    <link rel="preconnect" href="https://cdnjs.cloudflare.com">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" 
+          integrity="sha512-iecdLmaskl7CVkqkXNQ/ZH/XLlvWZOJyj7Yy7tcenmpD1ypASozpmT/E0iPtmFIB46ZmdtAc9eNBvH0H/ZpiBw==" 
+          crossorigin="anonymous" referrerpolicy="no-referrer" />
+    
+    <!-- Fallback for Font Awesome in case CDN fails -->
+    <script>
+    // Check if Font Awesome is loaded properly
+    document.addEventListener('DOMContentLoaded', function() {
+        setTimeout(function() {
+            const testIcon = document.createElement('i');
+            testIcon.className = 'fas fa-check';
+            testIcon.style.display = 'none';
+            document.body.appendChild(testIcon);
+            
+            const iconStyle = window.getComputedStyle(testIcon);
+            const isFontAwesomeLoaded = iconStyle.fontFamily.indexOf('Font Awesome') !== -1;
+            
+            if (!isFontAwesomeLoaded) {
+                console.log('Font Awesome failed to load. Loading fallback...');
+                loadFontAwesomeFallback();
+            }
+            
+            document.body.removeChild(testIcon);
+        }, 500);
+    });
+    
+    function loadFontAwesomeFallback() {
+        const link = document.createElement('link');
+        link.rel = 'stylesheet';
+        link.href = 'https://use.fontawesome.com/releases/v6.4.0/css/all.css';
+        document.head.appendChild(link);
+        
+        // If that fails too, try another CDN
+        setTimeout(function() {
+            const testIcon = document.createElement('i');
+            testIcon.className = 'fas fa-check';
+            testIcon.style.display = 'none';
+            document.body.appendChild(testIcon);
+            
+            const iconStyle = window.getComputedStyle(testIcon);
+            const isFontAwesomeLoaded = iconStyle.fontFamily.indexOf('Font Awesome') !== -1;
+            
+            if (!isFontAwesomeLoaded) {
+                console.log('Second Font Awesome source failed. Trying final source...');
+                const finalLink = document.createElement('link');
+                finalLink.rel = 'stylesheet';
+                finalLink.href = 'https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6.4.0/css/all.min.css';
+                document.head.appendChild(finalLink);
+            }
+            
+            document.body.removeChild(testIcon);
+        }, 1000);
+    }
+    </script>
+    <style>
+        :root {
+            --primary: #6d28d9;
+            --primary-dark: #5b21b6;
+            --secondary: #8b5cf6;
+            --secondary-dark: #7c3aed;
+            --light: #f3f4f6;
+            --dark: #121212;
+            --danger: #ef4444;
+            --success: #10b981;
+            --warning: #f59e0b;
+            --info: #3b82f6;
+            --white: #ffffff;
+            --gray-100: #1e1e1e;
+            --gray-200: #2d2d2d;
+            --gray-300: #3d3d3d;
+            --gray-400: #9ca3af;
+            --gray-500: #d1d5db;
+            --shadow-sm: 0 1px 2px 0 rgba(0, 0, 0, 0.2);
+            --shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.3), 0 1px 2px 0 rgba(0, 0, 0, 0.2);
+            --shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.3), 0 2px 4px -1px rgba(0, 0, 0, 0.2);
+            --shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.3), 0 4px 6px -2px rgba(0, 0, 0, 0.2);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Poppins', sans-serif !important;
+        }
+        
+        /* Ensure Poppins is applied to all text elements */
+        body, h1, h2, h3, h4, h5, h6, p, span, div, input, button, a, label {
+            font-family: 'Poppins', sans-serif !important;
+        }
+
+        body {
+            background-color: var(--gray-100);
+            color: var(--dark);
+            height: 100vh; /* Ensure body takes full height */
+            display: flex;
+            overflow: hidden; /* Prevent scrolling */
+        }
+
+        .showcase {
+            flex: 1;
+            background: linear-gradient(135deg, #6d28d9 0%, #121212 100%);
+            position: relative;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            overflow: hidden;
+            padding: 2rem; /* Reduced padding */
+            position: relative;
+        }
+
+        .showcase::before {
+            content: "";
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="100" height="100" viewBox="0 0 100 100"><rect fill-opacity="0.05" fill="white" x="0" y="0" width="100" height="100"/><path fill-opacity="0.05" fill="white" d="M-20,40 a60,60 0 1,0 120,0 a60,60 0 1,0 -120,0 Z"/></svg>') repeat;
+            opacity: 0.3;
+        }
+
+        .showcase-content {
+            position: relative;
+            max-width: 600px;
+            z-index: 10;
+        }
+
+        .dashboard-preview {
+            position: relative;
+            margin-top: 1.5rem; /* Reduced margin */
+            transform: perspective(1000px) rotateY(-5deg) rotateX(5deg);
+            transition: all 0.3s ease;
+            box-shadow: var(--shadow-lg);
+            border-radius: 1rem;
+            overflow: hidden;
+            height: 280px; /* Reduced height */
+            background-color: var(--white);
+        }
+
+        .dashboard-preview:hover {
+            transform: perspective(1000px) rotateY(0deg) rotateX(0deg);
+        }
+
+        .dashboard-preview img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .dashboard-preview-mock {
+            background-color: var(--white);
+            display: flex;
+            flex-direction: column;
+            height: 100%;
+        }
+
+        .dashboard-header {
+            display: flex;
+            align-items: center;
+            padding: 0.75rem; /* Reduced padding */
+            border-bottom: 1px solid var(--gray-200);
+            background-color: var(--white);
+        }
+
+        .dashboard-logo {
+            display: flex;
+            align-items: center;
+            font-weight: 700;
+            font-size: 1.1rem; /* Reduced font size */
+            color: var(--primary);
+        }
+
+        .dashboard-logo i {
+            margin-right: 0.5rem;
+            font-size: 1.3rem; /* Reduced font size */
+        }
+
+        .dashboard-body {
+            flex: 1;
+            display: flex;
+            padding: 0.75rem; /* Reduced padding */
+            background-color: var(--gray-100);
+            gap: 0.75rem; /* Reduced gap */
+        }
+
+        .dashboard-card {
+            flex: 1;
+            background: var(--white);
+            border-radius: 0.5rem;
+            padding: 0.75rem; /* Reduced padding */
+            box-shadow: var(--shadow-sm);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .card-title {
+            font-size: 0.7rem; /* Reduced font size */
+            font-weight: 600;
+            color: var(--gray-500);
+            margin-bottom: 0.3rem; /* Reduced margin */
+            display: flex;
+            align-items: center;
+        }
+
+        .card-title i {
+            margin-right: 0.25rem;
+            color: var(--primary);
+        }
+
+        .card-value {
+            font-size: 1rem; /* Reduced font size */
+            font-weight: 700;
+            margin-bottom: 0.3rem; /* Reduced margin */
+        }
+
+        .card-chart {
+            height: 30px; /* Reduced height */
+            margin-top: 0.5rem; /* Reduced margin */
+            display: flex;
+            align-items: flex-end;
+        }
+
+        .chart-bar {
+            flex: 1;
+            background-color: var(--primary);
+            opacity: 0.2;
+            margin: 0 1px;
+            border-radius: 2px 2px 0 0;
+        }
+
+        .chart-bar.active {
+            background-color: var(--primary);
+            opacity: 1;
+        }
+
+        .patient-card {
+            display: flex;
+            align-items: center;
+            padding: 0.4rem; /* Reduced padding */
+            background-color: var(--white);
+            border-radius: 0.5rem;
+            margin-bottom: 0.4rem; /* Reduced margin */
+            box-shadow: var(--shadow-sm);
+        }
+
+        .patient-avatar {
+            width: 1.8rem; /* Reduced width */
+            height: 1.8rem; /* Reduced height */
+            border-radius: 50%;
+            background-color: var(--primary);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--white);
+            font-weight: 600;
+            margin-right: 0.4rem; /* Reduced margin */
+        }
+
+        .patient-info {
+            flex: 1;
+            font-size: 0.65rem; /* Reduced font size */
+        }
+
+        .patient-name {
+            font-weight: 600;
+        }
+
+        .patient-time {
+            font-size: 0.55rem; /* Reduced font size */
+            color: var(--gray-500);
+            display: flex;
+            align-items: center;
+        }
+
+        .patient-time i {
+            font-size: 0.55rem; /* Reduced font size */
+            margin-right: 0.25rem;
+            color: var(--gray-400);
+        }
+
+        .badge {
+            font-size: 0.55rem; /* Reduced font size */
+            padding: 0.1rem 0.4rem; /* Reduced padding */
+            border-radius: 1rem;
+            background-color: var(--primary);
+            color: var(--white);
+            font-weight: 600;
+            display: flex;
+            align-items: center;
+            gap: 0.2rem;
+        }
+
+        .badge i {
+            font-size: 0.55rem; /* Reduced font size */
+        }
+
+        .badge-success {
+            background-color: var(--success);
+        }
+
+        .badge-warning {
+            background-color: var(--warning);
+        }
+        
+        .badge-info {
+            background-color: var(--info);
+        }
+
+        .login-container {
+            flex: 0 0 400px; /* Reduced width */
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            padding: 1rem; /* Reduced padding */
+            background-color: var(--dark);
+            color: var(--white);
+        }
+
+        .login-logo {
+            display: flex;
+            align-items: center;
+            margin-bottom: 0.75rem; /* Reduced margin */
+        }
+
+        .login-logo-icon {
+            width: 36px; /* Reduced size */
+            height: 36px; /* Reduced size */
+            border-radius: 10px; /* Reduced border radius */
+            background: linear-gradient(135deg, var(--primary) 0%, var(--primary-dark) 100%);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--white);
+            font-size: 1.1rem; /* Reduced font size */
+            margin-right: 0.75rem;
+        }
+
+        .login-logo-text {
+            font-weight: 600;
+            font-size: 1.1rem; /* Reduced font size */
+            color: var(--white);
+        }
+
+        .login-form {
+            width: 100%;
+            max-width: 340px; /* Reduced max width */
+        }
+
+        .login-title {
+            font-size: 1.5rem; /* Reduced font size */
+            font-weight: 700;
+            margin-bottom: 0.25rem; /* Reduced margin */
+            text-align: center;
+        }
+
+        .login-subtitle {
+            color: var(--gray-500);
+            margin-bottom: 1rem; /* Reduced margin */
+            text-align: center;
+            font-size: 0.85rem; /* Reduced font size */
+        }
+
+        .form-group {
+            margin-bottom: 0.75rem; /* Reduced margin */
+        }
+
+        .form-label {
+            display: block;
+            font-size: 0.8rem; /* Reduced font size */
+            font-weight: 500;
+            margin-bottom: 0.3rem; /* Reduced margin */
+            color: var(--gray-500);
+            display: flex;
+            align-items: center;
+        }
+
+        .form-label i {
+            margin-right: 0.4rem; /* Reduced margin */
+            color: var(--primary);
+            font-size: 0.8rem; /* Reduced font size */
+        }
+
+        .form-control {
+            width: 100%;
+            padding: 0.5rem 0.75rem; /* Reduced padding */
+            font-size: 0.9rem; /* Reduced font size */
+            line-height: 1.5;
+            border: 1px solid var(--gray-300);
+            border-radius: 0.5rem;
+            transition: border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out;
+            background-color: var(--gray-200);
+            color: var(--white);
+        }
+
+        .form-control:focus {
+            border-color: var(--primary);
+            outline: 0;
+            box-shadow: 0 0 0 3px rgba(109, 40, 217, 0.2); /* Reduced shadow size */
+        }
+
+        .input-group {
+            position: relative;
+        }
+
+        .input-icon {
+            position: absolute;
+            top: 50%;
+            right: 0.75rem; /* Reduced right position */
+            transform: translateY(-50%);
+            color: var(--gray-400);
+            cursor: pointer;
+            transition: color 0.2s ease;
+        }
+
+        .input-icon:hover {
+            color: var(--primary);
+        }
+
+        .form-check {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 1rem; /* Reduced margin */
+        }
+
+        .form-check-input {
+            margin-right: 0.4rem; /* Reduced margin */
+            cursor: pointer;
+        }
+
+        .form-check-label {
+            font-size: 0.8rem; /* Reduced font size */
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+        }
+
+        .form-check-label i {
+            margin-right: 0.3rem; /* Reduced margin */
+            color: var(--primary);
+            font-size: 0.8rem; /* Reduced font size */
+        }
+
+        .forgot-password {
+            color: var(--primary);
+            font-size: 0.8rem; /* Reduced font size */
+            text-decoration: none;
+            font-weight: 500;
+            display: flex;
+            align-items: center;
+        }
+
+        .forgot-password i {
+            margin-right: 0.3rem; /* Reduced margin */
+            font-size: 0.8rem; /* Reduced font size */
+        }
+
+        .forgot-password:hover {
+            text-decoration: underline;
+        }
+
+        .btn {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 500;
+            text-align: center;
+            white-space: nowrap;
+            vertical-align: middle;
+            user-select: none;
+            border: 1px solid transparent;
+            padding: 0.6rem 0.9rem; /* Reduced padding */
+            font-size: 0.9rem; /* Reduced font size */
+            line-height: 1.5;
+            border-radius: 0.5rem;
+            transition: color 0.15s ease-in-out, background-color 0.15s ease-in-out, border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out;
+            cursor: pointer;
+            gap: 0.4rem; /* Reduced gap */
+        }
+
+        .btn i {
+            font-size: 0.9rem; /* Reduced font size */
+        }
+
+        .btn-primary {
+            color: var(--white);
+            background-color: var(--primary);
+            border-color: var(--primary);
+            box-shadow: var(--shadow-sm);
+        }
+
+        .btn-primary:hover {
+            background-color: var(--primary-dark);
+            border-color: var(--primary-dark);
+        }
+
+        .btn-block {
+            display: flex;
+            width: 100%;
+        }
+
+        .btn-lg {
+            padding: 0.7rem 0.9rem; /* Reduced padding */
+            font-size: 1rem; /* Reduced font size */
+        }
+
+        .mb-4 {
+            margin-bottom: 1rem;
+        }
+
+        .text-white {
+            color: var(--white);
+        }
+
+        .fancy-title {
+            font-size: 2rem; /* Reduced font size */
+            font-weight: 800;
+            margin-bottom: 1rem; /* Reduced margin */
+            position: relative;
+            display: inline-block;
+        }
+
+        .fancy-title::after {
+            content: '';
+            position: absolute;
+            bottom: -8px; /* Reduced bottom position */
+            left: 0;
+            width: 60%;
+            height: 4px;
+            background-color: var(--secondary);
+            border-radius: 2px;
+        }
+
+        .highlighted {
+            color: var(--secondary);
+            font-weight: 700;
+        }
+
+        .showcase-description {
+            font-size: 0.9rem; /* Reduced font size */
+            line-height: 1.5; /* Reduced line height */
+            margin-bottom: 1rem; /* Reduced margin */
+            opacity: 0.9;
+            max-width: 85%;
+        }
+
+        .feature-list {
+            margin-bottom: 1rem; /* Reduced margin */
+        }
+
+        .feature-item {
+            display: flex;
+            align-items: center;
+            margin-bottom: 0.5rem; /* Reduced margin */
+            font-size: 0.85rem; /* Reduced font size */
+            opacity: 0.9;
+            color: var(--white);
+        }
+
+        .feature-icon {
+            margin-right: 0.6rem; /* Reduced margin */
+            font-size: 0.85rem; /* Reduced font size */
+            color: var(--secondary);
+            min-width: 24px; /* Reduced min width */
+            text-align: center;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            background-color: rgba(139, 92, 246, 0.2);
+            width: 24px; /* Reduced width */
+            height: 24px; /* Reduced height */
+            border-radius: 50%;
+            line-height: 24px; /* Reduced line height */
+        }
+
+        .testimonial {
+            background-color: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
+            padding: 0.75rem; /* Reduced padding */
+            border-radius: 0.5rem;
+            margin-top: 1rem; /* Reduced margin */
+            position: relative;
+            max-width: 80%;
+        }
+
+        .testimonial-text {
+            font-style: italic;
+            margin-bottom: 0.4rem; /* Reduced margin */
+            font-size: 0.85rem; /* Reduced font size */
+        }
+
+        .testimonial-author {
+            font-weight: 600;
+            display: flex;
+            align-items: center;
+            font-size: 0.85rem; /* Reduced font size */
+        }
+
+        .testimonial-author::before {
+            content: '';
+            display: inline-block;
+            width: 18px; /* Reduced width */
+            height: 2px;
+            background-color: var(--secondary);
+            margin-right: 0.4rem; /* Reduced margin */
+        }
+
+        /* Icon pulse effect */
+        .icon-pulse {
+            animation: iconPulse 2s infinite;
+        }
+
+        @keyframes iconPulse {
+            0% {
+                transform: scale(1);
+            }
+            50% {
+                transform: scale(1.1);
+            }
+            100% {
+                transform: scale(1);
+            }
+        }
+
+        /* Icon float effect */
+        .icon-float {
+            animation: iconFloat 3s ease-in-out infinite;
+        }
+
+        @keyframes iconFloat {
+            0%, 100% {
+                transform: translateY(0);
+            }
+            50% {
+                transform: translateY(-5px);
+            }
+        }
+
+        /* Added for Font Awesome icon fallback */
+        [class*="fa-"] {
+            font-family: 'Font Awesome 6 Free', 'Font Awesome 6 Brands', 'FontAwesome', sans-serif !important;
+            font-weight: 900;
+        }
+        
+        .far {
+            font-weight: 400 !important;
+        }
+        
+        .fab {
+            font-family: 'Font Awesome 6 Brands', 'FontAwesome', sans-serif !important;
+        }
+        
+        /* Fallback for missing icon classes */
+        .icon-fallback {
+            display: inline-block;
+            width: 1em;
+            height: 1em;
+            background-color: currentColor;
+            border-radius: 50%;
+        }
+
+        @media (max-width: 1024px) {
+            .showcase {
+                display: none;
+            }
+            
+            .login-container {
+                flex: 1;
+            }
+        }
+        
+        /* Notification styles */
+        .notification {
+            position: fixed;
+            top: 20px;
+            right: -300px;
+            width: 280px;
+            padding: 12px 16px;
+            background-color: var(--dark);
+            color: var(--white);
+            border-radius: 8px;
+            box-shadow: var(--shadow-md);
+            display: flex;
+            align-items: center;
+            z-index: 1000;
+            transition: right 0.3s ease;
+        }
+        
+        .notification.show {
+            right: 20px;
+        }
+        
+        .notification i:first-child {
+            margin-right: 10px;
+            font-size: 1.1rem;
+        }
+        
+        .notification span {
+            flex: 1;
+            font-size: 0.9rem;
+        }
+        
+        .notification-close {
+            cursor: pointer;
+            opacity: 0.7;
+            transition: opacity 0.2s;
+        }
+        
+        .notification-close:hover {
+            opacity: 1;
+        }
+        
+        .notification-success {
+            border-left: 4px solid var(--success);
+        }
+        
+        .notification-success i:first-child {
+            color: var(--success);
+        }
+        
+        .notification-error {
+            border-left: 4px solid var(--danger);
+        }
+        
+        .notification-error i:first-child {
+            color: var(--danger);
+        }
+        
+        .notification-info {
+            border-left: 4px solid var(--info);
+        }
+        
+        .notification-info i:first-child {
+            color: var(--info);
+        }
+        
+        .notification-warning {
+            border-left: 4px solid var(--warning);
+        }
+        
+        .notification-warning i:first-child {
+            color: var(--warning);
+        }
+        
+        @keyframes pulse {
+            0% {
+                box-shadow: 0 0 0 0 rgba(109, 40, 217, 0.7);
+            }
+            70% {
+                box-shadow: 0 0 0 10px rgba(109, 40, 217, 0);
+            }
+            100% {
+                box-shadow: 0 0 0 0 rgba(109, 40, 217, 0);
+            }
+        }
+        
+        .btn:disabled {
+            opacity: 0.7;
+            cursor: not-allowed;
+        }
+        
+        .cursor {
+            font-weight: 300;
+            animation: blink 1s infinite;
+        }
+        
+        @keyframes blink {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0; }
+        }
+        
+        .badge i {
+            animation: fadeInPulse 1.5s infinite alternate;
+        }
+        
+        @keyframes fadeInPulse {
+            0% { opacity: 0.7; }
+            100% { opacity: 1; }
+        }
+    </style>
+</head>
+<body>
+    <div class="showcase">
+        <div class="showcase-content">
+            <h1 class="fancy-title text-white">
+                Smarter Healthcare, <span class="highlighted">Simplified Workflows</span>
+            </h1>
+            <p class="showcase-description text-white">
+                <i class="fas fa-heartbeat" style="margin-right: 0.5rem; color: var(--secondary);"></i>  
+                IHMS optimizes hospital operations, enhances coordination, and ensures better patient outcomes with efficiency at its core.
+            </p>
+            <div class="feature-list">
+                <div class="feature-item">
+                    <span class="feature-icon"><i class="fas fa-user-check"></i></span>
+                    <span>Effortless patient journey from admission to discharge</span>
+                </div>
+                <div class="feature-item">
+                    <span class="feature-icon"><i class="fas fa-calendar-alt"></i></span>
+                    <span>Automated appointment scheduling for seamless care</span>
+                </div>
+                <div class="feature-item">
+                    <span class="feature-icon"><i class="fas fa-vial"></i></span>
+                    <span>Integrated lab diagnostics with instant result access</span>
+                </div>
+                <div class="feature-item">
+                    <span class="feature-icon"><i class="fas fa-user-md"></i></span>
+                    <span>Enhanced staff communication and real-time updates</span>
+                </div>
+                <div class="feature-item">
+                    <span class="feature-icon"><i class="fas fa-chart-line"></i></span>
+                    <span>Data-driven decision-making with smart analytics</span>
+                </div>
+            </div>            
+            <div class="dashboard-preview">
+                <div class="dashboard-preview-mock">
+                    <div class="dashboard-header">
+                        <div class="dashboard-logo">
+                            <i class="fas fa-heartbeat icon-pulse"></i>
+                            <span>IHMS Dashboard</span>
+                        </div>
+                    </div>
+                    <div class="dashboard-body">
+                        <div class="dashboard-card">
+                            <div class="card-title">
+                                <i class="fas fa-chart-line"></i>
+                                <span>Daily Revenue</span>
+                            </div>
+                            <div class="card-value">₹15,42,875</div>
+                            <div class="card-chart">
+                                <div class="chart-bar" style="height: 60%;"></div>
+                                <div class="chart-bar" style="height: 40%;"></div>
+                                <div class="chart-bar" style="height: 70%;"></div>
+                                <div class="chart-bar" style="height: 50%;"></div>
+                                <div class="chart-bar" style="height: 60%;"></div>
+                                <div class="chart-bar active" style="height: 80%;"></div>
+                                <div class="chart-bar" style="height: 65%;"></div>
+                            </div>
+                        </div>
+                        <div class="dashboard-card">
+                            <div class="card-title">
+                                <i class="fas fa-procedures"></i>
+                                <span>Today's Patients</span>
+                            </div>
+                            <div class="patient-card">
+                                <div class="patient-avatar">AK</div>
+                                <div class="patient-info">
+                                    <div class="patient-name">Arjun Kumar</div>
+                                    <div class="patient-time">
+                                        <i class="far fa-clock"></i>
+                                        Last Seen: 6:30 PM
+                                    </div>
+                                </div>
+                                <span class="badge badge-info">
+                                    <i class="fas fa-stethoscope"></i>
+                                    Check-up
+                                </span>
+                            </div>
+                            <div class="patient-card">
+                                <div class="patient-avatar">PS</div>
+                                <div class="patient-info">
+                                    <div class="patient-name">Priya Sharma</div>
+                                    <div class="patient-time">
+                                        <i class="far fa-clock"></i>
+                                        Last Seen: 4:15 PM
+                                    </div>
+                                </div>
+                                <span class="badge badge-success">
+                                    <i class="fas fa-check-circle"></i>
+                                    Completed
+                                </span>
+                            </div>
+                            <div class="patient-card">
+                                <div class="patient-avatar">RJ</div>
+                                <div class="patient-info">
+                                    <div class="patient-name">Rahul Joshi</div>
+                                    <div class="patient-time">
+                                        <i class="far fa-calendar-alt"></i>
+                                        Scheduled: 7:45 PM
+                                    </div>
+                                </div>
+                                <span class="badge badge-warning">
+                                    <i class="fas fa-hourglass-half"></i>
+                                    Upcoming
+                                </span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="login-container">
+        <div class="login-logo">
+            <div class="login-logo-icon">
+                <i class="fas fa-hospital-user icon-float"></i>
+            </div>
+            <div class="login-logo-text">IHMS Portal</div>
+        </div>
+        <div class="login-form">
+            <h2 class="login-title">Welcome Back</h2>
+            <p class="login-subtitle">Enter your credentials to access your account</p>
+            
+            <form id="loginForm">
+                <div class="form-group">
+                    <label for="email" class="form-label">
+                        <i class="fas fa-envelope"></i>
+                        Email address
+                    </label>
+                    <div class="input-group">
+                        <input type="email" class="form-control" id="email" placeholder="name@hospital.in" required>
+                    </div>
+                </div>
+                
+                <div class="form-group">
+                    <label for="password" class="form-label">
+                        <i class="fas fa-lock"></i>
+                        Password
+                    </label>
+                    <div class="input-group">
+                        <input type="password" class="form-control" id="password" placeholder="••••••••" required>
+                        <i class="fas fa-eye input-icon" id="togglePassword"></i>
+                    </div>
+                </div>
+                
+                <div class="form-check">
+                    <div>
+                        <input type="checkbox" class="form-check-input" id="remember">
+                        <label class="form-check-label" for="remember">
+                            <i class="fas fa-save"></i>
+                            Remember me
+                        </label>
+                    </div>
+                    <a href="#" class="forgot-password">
+                        <i class="fas fa-question-circle"></i>
+                        Forgot password?
+                    </a>
+                </div>
+                
+                <button type="submit" class="btn btn-primary btn-block btn-lg">
+                    <i class="fas fa-sign-in-alt"></i>
+                    Sign in
+                </button>
+            </form>
+        </div>
+    </div>
+
+    <script>
+        // Toggle password visibility
+        document.getElementById('togglePassword').addEventListener('click', function() {
+            const passwordInput = document.getElementById('password');
+            const passwordIcon = document.getElementById('togglePassword');
+            
+            if (passwordInput.type === 'password') {
+                passwordInput.type = 'text';
+                passwordIcon.classList.remove('fa-eye');
+                passwordIcon.classList.add('fa-eye-slash');
+            } else {
+                passwordInput.type = 'password';
+                passwordIcon.classList.remove('fa-eye-slash');
+                passwordIcon.classList.add('fa-eye');
+            }
+        });
+
+        // Form submission handler
+        document.getElementById('loginForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            
+            // Navigate directly to register.html
+            window.location.href = 'register.html';
+        });
+        // Enhanced notification system with better reliability
+        function showNotification(message, type = 'info') {
+            // Remove any existing notifications
+            const existingNotification = document.querySelector('.notification');
+            if (existingNotification) {
+                existingNotification.remove();
+            }
+            
+            // Create notification element
+            const notification = document.createElement('div');
+            notification.className = `notification notification-${type}`;
+            
+            // Set icon based on notification type
+            let icon = 'info-circle';
+            if (type === 'success') icon = 'check-circle';
+            if (type === 'error') icon = 'exclamation-circle';
+            if (type === 'warning') icon = 'exclamation-triangle';
+            
+            // Create icon element with fallback capability
+            const iconEl = document.createElement('i');
+            iconEl.className = `fas fa-${icon}`;
+            
+            // Fallback for icon if Font Awesome fails
+            iconEl.onerror = function() {
+                this.classList.add('icon-fallback');
+                this.classList.remove(`fa-${icon}`);
+            };
+            
+            notification.appendChild(iconEl);
+            
+            // Add message
+            const span = document.createElement('span');
+            span.textContent = message;
+            notification.appendChild(span);
+            
+            // Add close button with reliable icon
+            const closeBtn = document.createElement('i');
+            closeBtn.className = 'fas fa-times notification-close';
+            closeBtn.textContent = closeBtn.classList.contains('fas') ? '' : '×';
+            notification.appendChild(closeBtn);
+            
+            // Add to document
+            document.body.appendChild(notification);
+            
+            // Animate in
+            setTimeout(() => {
+                notification.classList.add('show');
+            }, 10);
+            
+            // Add close button functionality
+            closeBtn.addEventListener('click', function() {
+                notification.classList.remove('show');
+                setTimeout(() => {
+                    notification.remove();
+                }, 300);
+            });
+            
+            // Auto dismiss after 5 seconds
+            setTimeout(() => {
+                if (document.body.contains(notification)) {
+                    notification.classList.remove('show');
+                    setTimeout(() => {
+                        if (document.body.contains(notification)) {
+                            notification.remove();
+                        }
+                    }, 300);
+                }
+            }, 5000);
+        }
+
+        // Check for Font Awesome icons and provide inline fallbacks if needed
+        document.addEventListener('DOMContentLoaded', function() {
+            // Function to check if an element has Font Awesome properly loaded
+            function checkFontAwesome() {
+                const testIcon = document.createElement('i');
+                testIcon.className = 'fas fa-check';
+                testIcon.style.visibility = 'hidden';
+                document.body.appendChild(testIcon);
+                
+                const computedStyle = window.getComputedStyle(testIcon);
+                const fontFamily = computedStyle.getPropertyValue('font-family');
+                const isLoaded = fontFamily.includes('Font Awesome') || fontFamily.includes('FontAwesome');
+                
+                document.body.removeChild(testIcon);
+                return isLoaded;
+            }
+            
+            // If Font Awesome isn't loaded properly, apply fallbacks
+            if (!checkFontAwesome()) {
+                console.log('Font Awesome not loaded correctly, applying fallbacks...');
+                
+                // Try alternative CDN
+                const alternativeLink = document.createElement('link');
+                alternativeLink.rel = 'stylesheet';
+                alternativeLink.href = 'https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6.4.0/css/all.min.css';
+                document.head.appendChild(alternativeLink);
+                
+                // Provide Unicode fallbacks for critical icons
+                const iconFallbacks = {
+                    'fa-eye': '👁️',
+                    'fa-eye-slash': '🔒',
+                    'fa-lock': '🔒',
+                    'fa-envelope': '✉️',
+                    'fa-sign-in-alt': '➡️',
+                    'fa-save': '💾',
+                    'fa-question-circle': '❓',
+                    'fa-spinner': '⏳',
+                    'fa-check-circle': '✅',
+                    'fa-exclamation-circle': '❗',
+                    'fa-exclamation-triangle': '⚠️',
+                    'fa-info-circle': 'ℹ️',
+                    'fa-times': '❌',
+                    'fa-heartbeat': '❤️',
+                    'fa-user-check': '👤✓',
+                    'fa-calendar-check': '📅✓',
+                    'fa-flask': '🧪',
+                    'fa-users': '👥',
+                    'fa-chart-pie': '📊',
+                    'fa-chart-line': '📈',
+                    'fa-procedures': '🛏️',
+                    'fa-clock': '🕒',
+                    'fa-stethoscope': '⚕️',
+                    'fa-calendar-alt': '📆',
+                    'fa-hourglass-half': '⌛',
+                    'fa-hospital-user': '🏥👤'
+                };
+                
+                // Apply fallbacks after a short delay to allow alternate CDN to load
+                setTimeout(() => {
+                    if (!checkFontAwesome()) {
+                        document.querySelectorAll('i[class*="fa-"]').forEach(icon => {
+                            // Find which icon this is
+                            let iconName = '';
+                            for (const name in iconFallbacks) {
+                                if (icon.classList.contains(name)) {
+                                    iconName = name;
+                                    break;
+                                }
+                            }
+                            
+                            // If we found a fallback, apply it
+                            if (iconName && iconFallbacks[iconName]) {
+                                icon.textContent = iconFallbacks[iconName];
+                                icon.style.fontFamily = 'sans-serif';
+                            }
+                        });
+                    }
+                }, 1000);
+            }
+            
+            // Initialize UI animations
+            initializeAnimations();
+        });
+
+        // UI Animations
+        function initializeAnimations() {
+            // Animate chart bars
+            animateChartBars();
+            
+            // Animate dashboard preview with floating effect
+            animateDashboardPreview();
+            
+            // Animate patient cards with entrance effect
+            animatePatientCards();
+            
+            // Animate feature list with fade-in effect
+            animateFeatureItems();
+            
+            // Add typing animation to the title
+            animateLoginTitle();
+            
+            // Add currency counter animation
+            animateCurrencyCounter();
+        }
+
+        // Chart bars animation
+        function animateChartBars() {
+            const chartBars = document.querySelectorAll('.chart-bar');
+            chartBars.forEach((bar, index) => {
+                const height = bar.style.height;
+                bar.style.height = '0%';
+                
+                setTimeout(() => {
+                    bar.style.transition = 'height 0.5s ease-in-out';
+                    bar.style.height = height;
+                }, 100 * index);
+            });
+        }
+
+        // Dashboard preview animation
+        function animateDashboardPreview() {
+            const dashboardPreview = document.querySelector('.dashboard-preview');
+            if (!dashboardPreview) return;
+            
+            setInterval(() => {
+                dashboardPreview.style.transform = 'perspective(1000px) rotateY(-3deg) rotateX(3deg) translateY(-5px)';
+                setTimeout(() => {
+                    dashboardPreview.style.transform = 'perspective(1000px) rotateY(-7deg) rotateX(7deg) translateY(5px)';
+                }, 1000);
+            }, 2000);
+        }
+
+        // Patient cards animation
+        function animatePatientCards() {
+            const patientCards = document.querySelectorAll('.patient-card');
+            patientCards.forEach((card, index) => {
+                card.style.opacity = '0';
+                card.style.transform = 'translateX(20px)';
+                
+                setTimeout(() => {
+                    card.style.transition = 'all 0.5s ease-in-out';
+                    card.style.opacity = '1';
+                    card.style.transform = 'translateX(0)';
+                }, 300 * index + 500);
+            });
+        }
+
+        // Feature items animation
+        function animateFeatureItems() {
+            const featureItems = document.querySelectorAll('.feature-item');
+            featureItems.forEach((item, index) => {
+                item.style.opacity = '0';
+                item.style.transform = 'translateY(10px)';
+                
+                setTimeout(() => {
+                    item.style.transition = 'all 0.3s ease-in-out';
+                    item.style.opacity = '1';
+                    item.style.transform = 'translateY(0)';
+                }, 100 * index);
+            });
+        }
+
+        // Login title typing animation
+        function animateLoginTitle() {
+            const loginTitle = document.querySelector('.login-title');
+            if (!loginTitle) return;
+            
+            loginTitle.innerHTML = '';
+            const titleText = 'Welcome Back';
+            let i = 0;
+            
+            function typeWriter() {
+                if (i < titleText.length) {
+                    loginTitle.innerHTML += titleText.charAt(i);
+                    i++;
+                    setTimeout(typeWriter, 100);
+                } else {
+                    // Add a blinking cursor
+                    loginTitle.innerHTML += '<span class="cursor">|</span>';
+                    setInterval(() => {
+                        const cursor = document.querySelector('.cursor');
+                        if (cursor) {
+                            cursor.style.opacity = cursor.style.opacity === '0' ? '1' : '0';
+                        }
+                    }, 500);
+                }
+            }
+            
+            setTimeout(typeWriter, 500);
+        }
+
+        // Currency counter animation
+        function animateCurrencyCounter() {
+            const currencyValue = document.querySelector('.card-value');
+            if (!currencyValue) return;
+            
+            const targetValue = 1542875;
+            let startValue = 0;
+            const duration = 2000; // 2 seconds
+            const increment = Math.ceil(targetValue / (duration / 20)); // Update every 20ms
+            
+            function updateCounter() {
+                startValue += increment;
+                if (startValue > targetValue) {
+                    startValue = targetValue;
+                }
+                currencyValue.textContent = '₹' + startValue.toLocaleString('en-IN');
+                if (startValue < targetValue) {
+                    requestAnimationFrame(updateCounter);
+                }
+            }
+            
+            setTimeout(() => {
+                requestAnimationFrame(updateCounter);
+            }, 1000);
+        }
+    </script>
+</body>
+</html>
