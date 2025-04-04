@@ -318,7 +318,7 @@ select, input {
     background-color: white;
     color: #371854;
     font-family: 'Poppins', sans-serif;
-    font-size: 14px;
+    font-size: 12px;
     transition: var(--transition);
 }
 
@@ -389,7 +389,7 @@ select option {
     display: flex;
     align-items: center;
     gap: 6px;
-    font-size: 14px;
+    font-size: 13px;
 }
 
 .tab i {
@@ -431,7 +431,7 @@ select option {
     margin-bottom: 15px;
     color: var(--primary-color);
     font-weight: 600;
-    font-size: 18px;
+    font-size: 13px;
     padding-top: 5px;
     padding-bottom: 5px;
     font-family: 'Poppins', sans-serif;
@@ -466,7 +466,7 @@ select option {
     margin-bottom: 4px;
     font-weight: 500;
     color: var(--primary-dark);
-    font-size: 15px;
+    font-size: 12px;
 }
 
 .form-control {
